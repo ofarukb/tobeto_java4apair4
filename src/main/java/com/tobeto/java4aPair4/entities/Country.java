@@ -1,30 +1,29 @@
-package com.tobeto.java4aPair4;
+package com.tobeto.java4aPair4.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.util.List;
 
-@Table(name="images")
+@Table(name="countries")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Image {
+public class Country {
 
     @Column(name="id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="image_url")
-    private String image_url;
+    @Column(name="name")
+    private String name;
 
-    @ManyToOne
-    @JoinColumn(name="product_id")
-    private Product product;
-
+    @OneToMany(mappedBy = "country")
+    private List<City> cities;
 }

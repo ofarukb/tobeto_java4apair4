@@ -1,34 +1,30 @@
-package com.tobeto.java4aPair4;
+package com.tobeto.java4aPair4.entities;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.List;
 
-@Table(name="cart_items")
+@Table(name="images")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartItem {
+public class Image {
 
     @Column(name="id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="quantity")
-    private int quantity;
-
-    @Column(name="price")
-    private double price;
-
-    @ManyToOne
-    @JoinColumn(name="cart_id")
-    private Cart cart;
+    @Column(name="image_url")
+    private String image_url;
 
     @ManyToOne
     @JoinColumn(name="product_id")
     private Product product;
+
 }

@@ -1,22 +1,20 @@
-package com.tobeto.java4aPair4;
+package com.tobeto.java4aPair4.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
-
-@Table(name="products")
+@Table(name="categories")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class Category {
 
     @Column(name="id")
     @Id
@@ -35,19 +33,6 @@ public class Product {
     @Column(name="deleted_at")
     private LocalDateTime deleted_at;
 
-    @Column(name="price")
-    private double price;
-
-    @ManyToOne
-    @JoinColumn(name="category_id")
-    private Category category;
-
-    @OneToMany(mappedBy = "product")
-    private List<Image> images;
-
-    @OneToMany(mappedBy = "product")
-    private List<CartItem> cartItems;
-
-    @OneToMany(mappedBy = "product")
-    private List<OrderItem> orderItems;
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
 }

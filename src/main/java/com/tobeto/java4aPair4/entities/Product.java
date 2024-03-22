@@ -1,20 +1,24 @@
-package com.tobeto.java4aPair4;
+package com.tobeto.java4aPair4.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Table(name="categories")
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
+@Table(name="products")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category {
+public class Product {
 
     @Column(name="id")
     @Id
@@ -33,6 +37,22 @@ public class Category {
     @Column(name="deleted_at")
     private LocalDateTime deleted_at;
 
-    @OneToMany(mappedBy = "category")
-    private List<Product> products;
+    @Column(name="price")
+    private double price;
+
+    @ManyToOne
+    @JoinColumn(name="category_id")
+    private Category category;
+
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
+    private List<Image> images;
+
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
+    private List<CartItem> cartItems;
+
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
+    private List<OrderItem> orderItems;
 }

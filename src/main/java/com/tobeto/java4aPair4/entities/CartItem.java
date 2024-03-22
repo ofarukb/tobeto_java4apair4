@@ -1,17 +1,17 @@
-package com.tobeto.java4aPair4;
+package com.tobeto.java4aPair4.entities;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name="order_items")
+@Table(name="cart_items")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderItem {
+public class CartItem {
 
     @Column(name="id")
     @Id
@@ -25,8 +25,8 @@ public class OrderItem {
     private double price;
 
     @ManyToOne
-    @JoinColumn(name="order_id")
-    private Order order;
+    @JoinColumn(name="cart_id")
+    private Cart cart;
 
     @ManyToOne
     @JoinColumn(name="product_id")

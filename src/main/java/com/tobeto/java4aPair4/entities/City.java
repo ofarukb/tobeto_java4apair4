@@ -1,27 +1,34 @@
-package com.tobeto.java4aPair4;
+package com.tobeto.java4aPair4.entities;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name="orders")
+import java.util.List;
+
+@Table(name="cities")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+public class City {
 
     @Column(name="id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="total")
-    private double total;
+    @Column(name="name")
+    private String name;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
-    private User user;
+    @JoinColumn(name="country_id")
+    private Country country;
+
+    @OneToMany(mappedBy = "city")
+    private List<Address> addresses;
+
 }
