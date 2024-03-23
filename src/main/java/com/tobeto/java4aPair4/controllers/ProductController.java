@@ -23,7 +23,8 @@ public class ProductController {
 	
 	@GetMapping
 	public List<Product> getAll(){
-		return productRepository.findAll();
+		List<Product> products=productRepository.findAll();
+		return products;
 	}
 	
 	@PostMapping
