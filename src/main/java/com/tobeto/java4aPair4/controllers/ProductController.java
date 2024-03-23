@@ -14,23 +14,22 @@ import com.tobeto.java4aPair4.repositories.ProductRepository;
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
-	
+
 	private ProductRepository productRepository;
 
 	public ProductController(ProductRepository productRepository) {
 		this.productRepository = productRepository;
 	}
-	
+
 	@GetMapping
-	public List<Product> getAll(){
+	public List<Product> getAll() {
 		List<Product> products=productRepository.findAll();
 		return products;
 	}
-	
+
 	@PostMapping
-    public String add(@RequestBody Product product)
-    {
-        productRepository.save(product);
-        return "Ürün başarıyla Eklendi.";
-    }
+	public String add(@RequestBody Product product) {
+		productRepository.save(product);
+		return "Ürün başarıyla Eklendi.";
+	}
 }
