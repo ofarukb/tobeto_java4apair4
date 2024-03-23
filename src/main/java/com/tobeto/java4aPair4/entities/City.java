@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Table(name="cities")
 @Entity
 @Getter
@@ -29,6 +31,7 @@ public class City {
     private Country country;
 
     @OneToMany(mappedBy = "city")
+    @JsonIgnore
     private List<Address> addresses;
 
 }
