@@ -1,4 +1,5 @@
 package com.tobeto.java4aPair4.entities;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +8,9 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Table(name="users")
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Table(name = "users")
 @Entity
 @Getter
 @Setter
@@ -15,35 +18,37 @@ import java.util.List;
 @AllArgsConstructor
 public class User {
 
-    @Column(name="id")
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+	@Column(name = "id")
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
-    @Column(name="first_name")
-    private String firstName;
+	@Column(name = "first_name")
+	private String firstName;
 
-    @Column(name="last_name")
-    private String lastName;
+	@Column(name = "last_name")
+	private String lastName;
 
-    @Column(name="email")
-    private String email;
+	@Column(name = "email")
+	private String email;
 
-    @Column(name="phone")
-    private String phone;
+	@Column(name = "phone")
+	private String phone;
 
-    @Column(name="username")
-    private String userName;
+	@Column(name = "username")
+	private String userName;
 
-    @Column(name="password")
-    private String password;
+	@Column(name = "password")
+	private String password;
 
-    @OneToOne(mappedBy = "user")
-    private Cart cart;
+	@OneToOne(mappedBy = "user")
+	private Cart cart;
 
-    @OneToMany(mappedBy = "user")
-    private List<Order> orders;
+	@OneToMany(mappedBy = "user")
+	private List<Order> orders;
 
-    @ManyToMany(mappedBy = "users")
-    private List<Address> addresses;
+	@ManyToMany
+	@JoinTable(name = "user_address", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "address_id"))
+	@JsonIgnore
+	private List<Address> addresses;
 }

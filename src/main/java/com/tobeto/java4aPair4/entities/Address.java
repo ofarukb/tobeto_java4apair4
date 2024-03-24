@@ -8,7 +8,9 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Table(name="address")
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Table(name = "address")
 @Entity
 @Getter
 @Setter
@@ -16,30 +18,26 @@ import java.util.List;
 @AllArgsConstructor
 public class Address {
 
-    @Column(name="id")
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+	@Column(name = "id")
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
-    @Column(name="address_line1")
-    private String addressLine1;
+	@Column(name = "address_line1")
+	private String addressLine1;
 
-    @Column(name="address_line2")
-    private String addressLine2;
+	@Column(name = "address_line2")
+	private String addressLine2;
 
-    @ManyToOne
-    @JoinColumn(name="city_id")
-    private City city;
+	@ManyToOne
+	@JoinColumn(name = "city_id")
+	private City city;
 
-    @Column(name="postal_code")
-    private int postalCode;
+	@Column(name = "postal_code")
+	private int postalCode;
 
-    @ManyToMany
-    @JoinTable(name="user_address",
-            joinColumns = @JoinColumn(name="user_id", referencedColumnName="id"),
-            inverseJoinColumns =
-            @JoinColumn(name="address_id", referencedColumnName = "id"))
-    private List<User> users;
-
-
+	@ManyToMany
+	@JoinTable(name = "user_address", joinColumns = @JoinColumn(name = "address_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	@JsonIgnore
+	private List<User> users;
 }
