@@ -45,7 +45,7 @@ public class ProductController {
 	@DeleteMapping
 	public String add(@RequestParam int id) {
 		Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Ürün bulunamadı"));
-		productRepository.save(product);
-		return "Ürün başarıyla Eklendi.";
+		productRepository.delete(product);
+		return "Ürün silindi.";
 	}
 }
