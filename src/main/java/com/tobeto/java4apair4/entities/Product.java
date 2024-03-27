@@ -30,14 +30,13 @@ public class Product {
 
     @Column(name="created_at")
     @Generated
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @Column(name="modified_at")
-    private LocalDateTime modified_at;
+    private LocalDateTime modifiedAt;
 
     @Column(name="deleted_at")
-    @Generated
-    private LocalDateTime deleted_at;
+    private LocalDateTime deletedAt;
 
     @Column(name="price")
     private double price;
