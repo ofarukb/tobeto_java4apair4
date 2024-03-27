@@ -9,6 +9,8 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.hibernate.annotations.Generated;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
@@ -29,12 +31,14 @@ public class Product {
     private String name;
 
     @Column(name="created_at")
+    @Generated
     private LocalDateTime created_at;
 
     @Column(name="modified_at")
     private LocalDateTime modified_at;
 
     @Column(name="deleted_at")
+    @Generated
     private LocalDateTime deleted_at;
 
     @Column(name="price")
