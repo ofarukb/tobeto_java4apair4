@@ -11,8 +11,6 @@ import java.util.List;
 
 import org.hibernate.annotations.Generated;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Table(name = "categories")
 @Entity
 @Getter
@@ -41,6 +39,5 @@ public class Category {
 	private LocalDateTime deleted_at;
 
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonIgnore
 	private List<Product> products;
 }

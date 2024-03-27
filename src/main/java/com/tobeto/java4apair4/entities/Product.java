@@ -11,8 +11,6 @@ import java.util.List;
 
 import org.hibernate.annotations.Generated;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 
 @Table(name="products")
 @Entity
@@ -49,14 +47,11 @@ public class Product {
     private Category category;
 
     @OneToMany(mappedBy = "product")
-    @JsonIgnore
     private List<Image> images;
 
     @OneToMany(mappedBy = "product")
-    @JsonIgnore
     private List<CartItem> cartItems;
 
     @OneToMany(mappedBy = "product")
-    @JsonIgnore
     private List<OrderItem> orderItems;
 }
