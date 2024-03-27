@@ -38,6 +38,6 @@ public class Category {
 	@Generated
 	private LocalDateTime deleted_at;
 
-	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
 	private List<Product> products;
 }
