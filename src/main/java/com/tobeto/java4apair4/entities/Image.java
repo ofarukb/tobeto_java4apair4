@@ -1,37 +1,30 @@
-package com.tobeto.java4aPair4.entities;
+package com.tobeto.java4apair4.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Table(name="cities")
+@Table(name="images")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class City {
+public class Image {
 
     @Column(name="id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="name")
-    private String name;
+    @Column(name="image_url")
+    private String image_url;
 
     @ManyToOne
-    @JoinColumn(name="country_id")
-    private Country country;
-
-    @OneToMany(mappedBy = "city")
-    @JsonIgnore
-    private List<Address> addresses;
+    @JoinColumn(name="product_id")
+    private Product product;
 
 }

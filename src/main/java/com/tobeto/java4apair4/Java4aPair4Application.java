@@ -1,4 +1,4 @@
-package com.tobeto.java4aPair4;
+package com.tobeto.java4apair4;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

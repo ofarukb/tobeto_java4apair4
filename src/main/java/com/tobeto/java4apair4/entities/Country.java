@@ -1,4 +1,4 @@
-package com.tobeto.java4aPair4.entities;
+package com.tobeto.java4apair4.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

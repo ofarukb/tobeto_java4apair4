@@ -1,4 +1,4 @@
-package com.tobeto.java4aPair4.entities;
+package com.tobeto.java4apair4.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,13 +11,14 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Table(name="categories")
+
+@Table(name="products")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category {
+public class Product {
 
     @Column(name="id")
     @Id
@@ -36,7 +37,22 @@ public class Category {
     @Column(name="deleted_at")
     private LocalDateTime deleted_at;
 
-    @OneToMany(mappedBy = "category")
+    @Column(name="price")
+    private double price;
+
+    @ManyToOne
+    @JoinColumn(name="category_id")
+    private Category category;
+
+    @OneToMany(mappedBy = "product")
     @JsonIgnore
-    private List<Product> products;
+    private List<Image> images;
+
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
+    private List<CartItem> cartItems;
+
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
+    private List<OrderItem> orderItems;
 }

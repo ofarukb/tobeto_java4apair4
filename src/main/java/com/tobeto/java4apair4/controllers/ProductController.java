@@ -1,4 +1,4 @@
-package com.tobeto.java4aPair4.controllers;
+package com.tobeto.java4apair4.controllers;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tobeto.java4aPair4.entities.Product;
-import com.tobeto.java4aPair4.repositories.ProductRepository;
+import com.tobeto.java4apair4.entities.Product;
+import com.tobeto.java4apair4.repositories.ProductRepository;
 
 @RestController
 @RequestMapping("/api/products")
