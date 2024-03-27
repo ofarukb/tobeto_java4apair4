@@ -30,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
 		// Category'leri map'le
 		for (Category category : categories) {
 			CategoryForListingDto categoryForListingDto = new CategoryForListingDto(category.getId(),
-					category.getName(), category.getCreated_at(), category.getModified_at(), category.getDeleted_at());
+					category.getName(), category.getCreatedAt(), category.getModifiedAt(), category.getDeletedAt());
 			categoryForListingDtos.add(categoryForListingDto);
 		}
 		return categoryForListingDtos;
