@@ -1,4 +1,4 @@
-package com.tobeto.java4apair4.services.dtos.product;
+package com.tobeto.java4apair4.services.dtos.requests.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductForAddingDto {
+public class AddProductRequest {
 	private String name;
 	private double price;
 	private int categoryId;

@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tobeto.java4apair4.services.abstracts.ProductService;
-import com.tobeto.java4apair4.services.dtos.product.ProductForAddingDto;
-import com.tobeto.java4apair4.services.dtos.product.ProductForListingDto;
-import com.tobeto.java4apair4.services.dtos.product.ProductForUpdatingDto;
+import com.tobeto.java4apair4.services.dtos.requests.product.AddProductRequest;
+import com.tobeto.java4apair4.services.dtos.requests.product.UpdateProductRequest;
+import com.tobeto.java4apair4.services.dtos.responses.product.AddProductResponse;
+import com.tobeto.java4apair4.services.dtos.responses.product.ListProductResponse;
+import com.tobeto.java4apair4.services.dtos.responses.product.UpdateProductResponse;
 
 @RestController
 @RequestMapping("/api/products")
@@ -30,20 +32,20 @@ public class ProductController {
 	}
 
 	@GetMapping
-	public List<ProductForListingDto> getAll() {
-		List<ProductForListingDto> products = productService.getAll();
+	public List<ListProductResponse> getAll() {
+		List<ListProductResponse> products = productService.getAll();
 		return products;
 	}
 
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public void add(@RequestBody ProductForAddingDto product) {
-		productService.add(product);
+	public AddProductResponse add(@RequestBody AddProductRequest request) {
+		return productService.add(request);
 	}
 
 	@PutMapping
-	public void update(@RequestBody ProductForUpdatingDto product) {
-		productService.update(product);
+	public UpdateProductResponse update(@RequestBody UpdateProductRequest request) {
+		return productService.update(request);
 	}
 
 	@DeleteMapping

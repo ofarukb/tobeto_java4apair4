@@ -11,10 +11,12 @@ import com.tobeto.java4apair4.entities.Product;
 import com.tobeto.java4apair4.repositories.CategoryRepository;
 import com.tobeto.java4apair4.repositories.ProductRepository;
 import com.tobeto.java4apair4.services.abstracts.ProductService;
-import com.tobeto.java4apair4.services.dtos.product.ProductForAddingDto;
-import com.tobeto.java4apair4.services.dtos.product.ProductForListingDto;
-import com.tobeto.java4apair4.services.dtos.product.ProductForUpdatingDto;
+import com.tobeto.java4apair4.services.dtos.requests.product.AddProductRequest;
+import com.tobeto.java4apair4.services.dtos.requests.product.UpdateProductRequest;
 import com.tobeto.java4apair4.services.dtos.responses.category.ListCategoryResponse;
+import com.tobeto.java4apair4.services.dtos.responses.product.AddProductResponse;
+import com.tobeto.java4apair4.services.dtos.responses.product.ListProductResponse;
+import com.tobeto.java4apair4.services.dtos.responses.product.UpdateProductResponse;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -29,53 +31,63 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<ProductForListingDto> getAll() {
+	public List<ListProductResponse> getAll() {
 		List<Product> products = productRepository.findAll();
-		List<ProductForListingDto> productForListingDtos = new ArrayList<ProductForListingDto>();
+		List<ListProductResponse> response = new ArrayList<ListProductResponse>();
 
 		// Product'lari map'le
 		for (Product product : products) {
 			// Önce Product'in Category'sini map'le
-			Category categoryEntity = categoryRepository.findById(product.getCategory().getId())
+			Category category = categoryRepository.findById(product.getCategory().getId())
 					.orElseThrow(() -> new RuntimeException("Kategori bulunamadı"));
-			ListCategoryResponse categoryForListingDto = new ListCategoryResponse(categoryEntity.getId(),
-					categoryEntity.getName(), categoryEntity.getCreatedAt(), categoryEntity.getModifiedAt());
-			ProductForListingDto productForListingDto = new ProductForListingDto(product.getId(), product.getName(),
-					product.getPrice(), product.getCreatedAt(), product.getModifiedAt(), product.getDeletedAt(),
-					categoryForListingDto);
-			productForListingDtos.add(productForListingDto);
+			ListCategoryResponse listCategoryResponse = new ListCategoryResponse(category.getId(), category.getName(),
+					category.getCreatedAt(), category.getModifiedAt());
+			ListProductResponse listProductResponse = new ListProductResponse(product.getId(), product.getName(),
+					product.getPrice(), product.getCreatedAt(), product.getModifiedAt(), listCategoryResponse);
+			response.add(listProductResponse);
 		}
-		return productForListingDtos;
+		return response;
 	}
 
 	@Override
-	public void add(ProductForAddingDto productForAddingDto) {
-		// Product'i map'le
+	public AddProductResponse add(AddProductRequest request) {
+		// Request'ten Product'a map'le
 		Product product = new Product();
-		product.setName(productForAddingDto.getName());
-		product.setPrice(productForAddingDto.getPrice());
-		// Category'sini map'le
-		Category category = new Category();
-		category.setId(productForAddingDto.getCategoryId());
+		product.setName(request.getName());
+		product.setPrice(request.getPrice());
+		// Request'in Category'sini map'le
+		Category category = categoryRepository.findById(request.getCategoryId())
+				.orElseThrow(() -> new RuntimeException("Kategori bulunamadi"));
 		product.setCategory(category);
-		productRepository.save(product);
+		Product savedProduct = productRepository.save(product);
+
+		// Product'i Response'a map'le
+		// Önce Category'sini map'le
+		ListCategoryResponse categoryResponse = new ListCategoryResponse(savedProduct.getCategory().getId(),
+				savedProduct.getCategory().getName(), savedProduct.getCategory().getCreatedAt(),
+				savedProduct.getCategory().getModifiedAt());
+		AddProductResponse response = new AddProductResponse(savedProduct.getId(), savedProduct.getName(),
+				savedProduct.getPrice(), savedProduct.getCreatedAt(), categoryResponse);
+		return response;
 	}
 
 	@Override
-	public void update(ProductForUpdatingDto productForUpdatingDto) {
-		// Product'i map'le
-		Product product = new Product();
-		product.setName(productForUpdatingDto.getName());
-		product.setPrice(productForUpdatingDto.getPrice());
-		product.setId(productForUpdatingDto.getId());
+	public UpdateProductResponse update(UpdateProductRequest request) {
+		// Request'ten Product'a map'le
+		Product product = productRepository.findById(request.getId())
+				.orElseThrow(() -> new RuntimeException("Urun bulunamadi"));
+		product.setName(request.getName());
+		product.setPrice(request.getPrice());
 		product.setModifiedAt(LocalDateTime.now());// tarih guncelle
-		// Category'sini map'le
-		int categoryId = productRepository.findById(productForUpdatingDto.getId())
-				.orElseThrow(() -> new RuntimeException("Ürün bulunamadı")).getCategory().getId();
-		Category category = new Category();
-		category.setId(categoryId);
-		product.setCategory(category);
-		productRepository.save(product);
+		Product savedProduct = productRepository.save(product);
+
+		// Product'i Response'a map'le
+		ListCategoryResponse categoryResponse = new ListCategoryResponse(savedProduct.getCategory().getId(),
+				savedProduct.getCategory().getName(), savedProduct.getCategory().getCreatedAt(),
+				savedProduct.getCategory().getModifiedAt());
+		UpdateProductResponse response = new UpdateProductResponse(savedProduct.getId(), savedProduct.getName(),
+				savedProduct.getPrice(), savedProduct.getCreatedAt(), savedProduct.getModifiedAt(), categoryResponse);
+		return response;
 	}
 
 	@Override
