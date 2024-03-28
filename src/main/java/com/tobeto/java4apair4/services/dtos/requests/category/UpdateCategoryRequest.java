@@ -1,4 +1,4 @@
-package com.tobeto.java4apair4.services.dtos.category;
+package com.tobeto.java4apair4.services.dtos.requests.category;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryForUpdatingDto {
+public class UpdateCategoryRequest {
 	private int id;
 	private String name;
 }

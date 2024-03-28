@@ -1,5 +1,6 @@
 package com.tobeto.java4apair4.services.concretes;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,9 +9,11 @@ import org.springframework.stereotype.Service;
 import com.tobeto.java4apair4.entities.Category;
 import com.tobeto.java4apair4.repositories.CategoryRepository;
 import com.tobeto.java4apair4.services.abstracts.CategoryService;
-import com.tobeto.java4apair4.services.dtos.category.CategoryForAddingDto;
-import com.tobeto.java4apair4.services.dtos.category.CategoryForListingDto;
-import com.tobeto.java4apair4.services.dtos.category.CategoryForUpdatingDto;
+import com.tobeto.java4apair4.services.dtos.requests.category.AddCategoryRequest;
+import com.tobeto.java4apair4.services.dtos.requests.category.UpdateCategoryRequest;
+import com.tobeto.java4apair4.services.dtos.responses.category.AddCategoryResponse;
+import com.tobeto.java4apair4.services.dtos.responses.category.ListCategoryResponse;
+import com.tobeto.java4apair4.services.dtos.responses.category.UpdateCategoryResponse;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -23,34 +26,47 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public List<CategoryForListingDto> getAll() {
+	public List<ListCategoryResponse> getAll() {
 		List<Category> categories = categoryRepository.findAll();
-		List<CategoryForListingDto> categoryForListingDtos = new ArrayList<CategoryForListingDto>();
+		List<ListCategoryResponse> categoryForListingDtos = new ArrayList<ListCategoryResponse>();
 
 		// Category'leri map'le
 		for (Category category : categories) {
-			CategoryForListingDto categoryForListingDto = new CategoryForListingDto(category.getId(),
-					category.getName(), category.getCreatedAt(), category.getModifiedAt(), category.getDeletedAt());
+			ListCategoryResponse categoryForListingDto = new ListCategoryResponse(category.getId(), category.getName(),
+					category.getCreatedAt(), category.getModifiedAt(), category.getDeletedAt());
 			categoryForListingDtos.add(categoryForListingDto);
 		}
 		return categoryForListingDtos;
 	}
 
 	@Override
-	public void add(CategoryForAddingDto categoryForAddingDto) {
-		// Category'yi map'le
+	public AddCategoryResponse add(AddCategoryRequest request) {
+		// Request'i Category'ye map'le
 		Category category = new Category();
-		category.setName(categoryForAddingDto.getName());
-		categoryRepository.save(category);
+		category.setName(request.getName());
+		category.setCreatedAt(LocalDateTime.now());
+		Category savedCategory = categoryRepository.save(category);
+
+		// Category'yi Response'a map'le
+		AddCategoryResponse response = new AddCategoryResponse(savedCategory.getId(), savedCategory.getName(),
+				savedCategory.getCreatedAt());
+		return response;
 	}
 
 	@Override
-	public void update(CategoryForUpdatingDto categoryForUpdatingDto) {
-		// Category'yi map'le
+	public UpdateCategoryResponse update(UpdateCategoryRequest request) {
+		// Request'i Category'ye map'le
 		Category category = new Category();
-		category.setId(categoryForUpdatingDto.getId());
-		category.setName(categoryForUpdatingDto.getName());
-		categoryRepository.save(category);
+		category.setId(request.getId());
+		category.setName(request.getName());
+		category.setModifiedAt(LocalDateTime.now());
+		Category savedCategory = categoryRepository.save(category);
+
+		// Category'yi Response'a map'le
+		UpdateCategoryResponse response = new UpdateCategoryResponse(savedCategory.getId(), savedCategory.getName(),
+				savedCategory.getCreatedAt(), savedCategory.getModifiedAt());
+
+		return response;
 	}
 
 	@Override

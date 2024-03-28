@@ -1,4 +1,4 @@
-package com.tobeto.java4apair4.services.dtos.category;
+package com.tobeto.java4apair4.services.dtos.responses.category;
 
 import java.time.LocalDateTime;
 
@@ -9,12 +9,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class CategoryForListingDto {
+@AllArgsConstructor
+public class UpdateCategoryResponse {
 	private int id;
 	private String name;
 	private LocalDateTime createdAt;
 	private LocalDateTime modifiedAt;
-	private LocalDateTime deletedAt;
 }

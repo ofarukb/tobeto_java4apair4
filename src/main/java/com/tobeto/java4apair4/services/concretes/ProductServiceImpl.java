@@ -11,10 +11,10 @@ import com.tobeto.java4apair4.entities.Product;
 import com.tobeto.java4apair4.repositories.CategoryRepository;
 import com.tobeto.java4apair4.repositories.ProductRepository;
 import com.tobeto.java4apair4.services.abstracts.ProductService;
-import com.tobeto.java4apair4.services.dtos.category.CategoryForListingDto;
 import com.tobeto.java4apair4.services.dtos.product.ProductForAddingDto;
 import com.tobeto.java4apair4.services.dtos.product.ProductForListingDto;
 import com.tobeto.java4apair4.services.dtos.product.ProductForUpdatingDto;
+import com.tobeto.java4apair4.services.dtos.responses.category.ListCategoryResponse;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
 			// Önce Product'in Category'sini map'le
 			Category categoryEntity = categoryRepository.findById(product.getCategory().getId())
 					.orElseThrow(() -> new RuntimeException("Kategori bulunamadı"));
-			CategoryForListingDto categoryForListingDto = new CategoryForListingDto(categoryEntity.getId(),
+			ListCategoryResponse categoryForListingDto = new ListCategoryResponse(categoryEntity.getId(),
 					categoryEntity.getName(), categoryEntity.getCreatedAt(), categoryEntity.getModifiedAt(),
 					categoryEntity.getDeletedAt());
 			ProductForListingDto productForListingDto = new ProductForListingDto(product.getId(), product.getName(),

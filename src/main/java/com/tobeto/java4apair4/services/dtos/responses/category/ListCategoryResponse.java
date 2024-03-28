@@ -1,8 +1,6 @@
-package com.tobeto.java4apair4.services.dtos.product;
+package com.tobeto.java4apair4.services.dtos.responses.category;
 
 import java.time.LocalDateTime;
-
-import com.tobeto.java4apair4.services.dtos.responses.category.ListCategoryResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,12 +11,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductForListingDto {
+public class ListCategoryResponse {
 	private int id;
 	private String name;
-	private double price;
 	private LocalDateTime createdAt;
 	private LocalDateTime modifiedAt;
 	private LocalDateTime deletedAt;
-	private ListCategoryResponse category;
 }

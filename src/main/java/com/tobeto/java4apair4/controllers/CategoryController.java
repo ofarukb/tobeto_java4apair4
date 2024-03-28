@@ -14,9 +14,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tobeto.java4apair4.services.abstracts.CategoryService;
-import com.tobeto.java4apair4.services.dtos.category.CategoryForAddingDto;
-import com.tobeto.java4apair4.services.dtos.category.CategoryForListingDto;
-import com.tobeto.java4apair4.services.dtos.category.CategoryForUpdatingDto;
+import com.tobeto.java4apair4.services.dtos.requests.category.AddCategoryRequest;
+import com.tobeto.java4apair4.services.dtos.requests.category.UpdateCategoryRequest;
+import com.tobeto.java4apair4.services.dtos.responses.category.AddCategoryResponse;
+import com.tobeto.java4apair4.services.dtos.responses.category.ListCategoryResponse;
+import com.tobeto.java4apair4.services.dtos.responses.category.UpdateCategoryResponse;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/categories")
@@ -30,19 +34,19 @@ public class CategoryController {
 	}
 
 	@GetMapping
-	public List<CategoryForListingDto> getAll() {
+	public List<ListCategoryResponse> getAll() {
 		return categoryService.getAll();
 	}
 
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public void add(@RequestBody CategoryForAddingDto category) {
-		categoryService.add(category);
+	public AddCategoryResponse add(@RequestBody AddCategoryRequest category) {
+		return categoryService.add(category);
 	}
 	
 	@PutMapping
-	public void add(@RequestBody CategoryForUpdatingDto category) {
-		categoryService.update(category);
+	public UpdateCategoryResponse add(@RequestBody UpdateCategoryRequest category) {
+		return categoryService.update(category);
 	}
 
 	@DeleteMapping
