@@ -10,7 +10,7 @@ import com.tobeto.java4apair4.services.dtos.responses.category.UpdateCategoryRes
 
 public interface CategoryService {
 	List<ListCategoryResponse> getAll();
-	AddCategoryResponse add(AddCategoryRequest categoryForAddingDto);
-	UpdateCategoryResponse update(UpdateCategoryRequest categoryForUpdatingDto);
+	AddCategoryResponse add(AddCategoryRequest request);
+	UpdateCategoryResponse update(UpdateCategoryRequest request);
 	void deleteById(int id);
 }

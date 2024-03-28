@@ -28,15 +28,15 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public List<ListCategoryResponse> getAll() {
 		List<Category> categories = categoryRepository.findAll();
-		List<ListCategoryResponse> categoryForListingDtos = new ArrayList<ListCategoryResponse>();
+		List<ListCategoryResponse> response = new ArrayList<ListCategoryResponse>();
 
 		// Category'leri map'le
 		for (Category category : categories) {
-			ListCategoryResponse categoryForListingDto = new ListCategoryResponse(category.getId(), category.getName(),
+			ListCategoryResponse categoryResponse = new ListCategoryResponse(category.getId(), category.getName(),
 					category.getCreatedAt(), category.getModifiedAt());
-			categoryForListingDtos.add(categoryForListingDto);
+			response.add(categoryResponse);
 		}
-		return categoryForListingDtos;
+		return response;
 	}
 
 	@Override
