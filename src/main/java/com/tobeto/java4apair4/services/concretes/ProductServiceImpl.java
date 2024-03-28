@@ -39,8 +39,7 @@ public class ProductServiceImpl implements ProductService {
 			Category categoryEntity = categoryRepository.findById(product.getCategory().getId())
 					.orElseThrow(() -> new RuntimeException("Kategori bulunamadı"));
 			ListCategoryResponse categoryForListingDto = new ListCategoryResponse(categoryEntity.getId(),
-					categoryEntity.getName(), categoryEntity.getCreatedAt(), categoryEntity.getModifiedAt(),
-					categoryEntity.getDeletedAt());
+					categoryEntity.getName(), categoryEntity.getCreatedAt(), categoryEntity.getModifiedAt());
 			ProductForListingDto productForListingDto = new ProductForListingDto(product.getId(), product.getName(),
 					product.getPrice(), product.getCreatedAt(), product.getModifiedAt(), product.getDeletedAt(),
 					categoryForListingDto);
@@ -73,7 +72,7 @@ public class ProductServiceImpl implements ProductService {
 		// Category'sini map'le
 		int categoryId = productRepository.findById(productForUpdatingDto.getId())
 				.orElseThrow(() -> new RuntimeException("Ürün bulunamadı")).getCategory().getId();
-		Category category=new Category();
+		Category category = new Category();
 		category.setId(categoryId);
 		product.setCategory(category);
 		productRepository.save(product);

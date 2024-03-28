@@ -33,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
 		// Category'leri map'le
 		for (Category category : categories) {
 			ListCategoryResponse categoryForListingDto = new ListCategoryResponse(category.getId(), category.getName(),
-					category.getCreatedAt(), category.getModifiedAt(), category.getDeletedAt());
+					category.getCreatedAt(), category.getModifiedAt());
 			categoryForListingDtos.add(categoryForListingDto);
 		}
 		return categoryForListingDtos;
@@ -56,8 +56,8 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public UpdateCategoryResponse update(UpdateCategoryRequest request) {
 		// Request'i Category'ye map'le
-		Category category = new Category();
-		category.setId(request.getId());
+		Category category = categoryRepository.findById(request.getId())
+				.orElseThrow(() -> new RuntimeException("Kategori bulunamadı"));
 		category.setName(request.getName());
 		category.setModifiedAt(LocalDateTime.now());
 		Category savedCategory = categoryRepository.save(category);

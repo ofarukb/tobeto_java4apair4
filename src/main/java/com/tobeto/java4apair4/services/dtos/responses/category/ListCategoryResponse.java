@@ -16,5 +16,4 @@ public class ListCategoryResponse {
 	private String name;
 	private LocalDateTime createdAt;
 	private LocalDateTime modifiedAt;
-	private LocalDateTime deletedAt;
 }
