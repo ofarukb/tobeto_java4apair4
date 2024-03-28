@@ -20,6 +20,8 @@ import com.tobeto.java4apair4.services.dtos.responses.product.AddProductResponse
 import com.tobeto.java4apair4.services.dtos.responses.product.ListProductResponse;
 import com.tobeto.java4apair4.services.dtos.responses.product.UpdateProductResponse;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
@@ -39,12 +41,12 @@ public class ProductController {
 
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public AddProductResponse add(@RequestBody AddProductRequest request) {
+	public AddProductResponse add(@RequestBody @Valid AddProductRequest request) {
 		return productService.add(request);
 	}
 
 	@PutMapping
-	public UpdateProductResponse update(@RequestBody UpdateProductRequest request) {
+	public UpdateProductResponse update(@RequestBody @Valid UpdateProductRequest request) {
 		return productService.update(request);
 	}
 
