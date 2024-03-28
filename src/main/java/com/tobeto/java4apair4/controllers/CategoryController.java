@@ -40,12 +40,12 @@ public class CategoryController {
 
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public AddCategoryResponse add(@RequestBody AddCategoryRequest category) {
+	public AddCategoryResponse add(@RequestBody @Valid AddCategoryRequest category) {
 		return categoryService.add(category);
 	}
 	
 	@PutMapping
-	public UpdateCategoryResponse add(@RequestBody UpdateCategoryRequest category) {
+	public UpdateCategoryResponse add(@RequestBody @Valid UpdateCategoryRequest category) {
 		return categoryService.update(category);
 	}
 
