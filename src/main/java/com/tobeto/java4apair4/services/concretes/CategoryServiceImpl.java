@@ -3,10 +3,12 @@ package com.tobeto.java4apair4.services.concretes;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.tobeto.java4apair4.entities.Category;
+import com.tobeto.java4apair4.entities.Product;
 import com.tobeto.java4apair4.repositories.CategoryRepository;
 import com.tobeto.java4apair4.services.abstracts.CategoryService;
 import com.tobeto.java4apair4.services.dtos.requests.category.AddCategoryRequest;
@@ -41,6 +43,8 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public AddCategoryResponse add(AddCategoryRequest request) {
+		categoryWithSameNameShouldNotExist(request.getName());
+
 		// Request'i Category'ye map'le
 		Category category = new Category();
 		category.setName(request.getName());
@@ -55,6 +59,8 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public UpdateCategoryResponse update(UpdateCategoryRequest request) {
+		categoryWithSameNameShouldNotExist(request.getName());
+
 		// Request'i Category'ye map'le
 		Category category = categoryRepository.findById(request.getId())
 				.orElseThrow(() -> new RuntimeException("Kategori bulunamadı"));
@@ -72,6 +78,14 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public void deleteById(int id) {
 		categoryRepository.deleteById(id);
+	}
+
+	// Aynı isimde kategori olup olmadigini kontrol et
+	private void categoryWithSameNameShouldNotExist(String categoryName) {
+		Optional<Category> categoryWithSameName = categoryRepository.findByName(categoryName);
+		if (categoryWithSameName.isPresent()) {
+			throw new RuntimeException(categoryName + " isimli bir kategori zaten var");
+		}
 	}
 
 }

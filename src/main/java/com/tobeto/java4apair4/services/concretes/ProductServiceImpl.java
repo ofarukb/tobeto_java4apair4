@@ -3,6 +3,7 @@ package com.tobeto.java4apair4.services.concretes;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -51,6 +52,8 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public AddProductResponse add(AddProductRequest request) {
+		productWithSameNameShouldNotExist(request.getName());
+		
 		// Request'ten Product'a map'le
 		Product product = new Product();
 		product.setName(request.getName());
@@ -73,6 +76,8 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public UpdateProductResponse update(UpdateProductRequest request) {
+		productWithSameNameShouldNotExist(request.getName());
+		
 		// Request'ten Product'a map'le
 		Product product = productRepository.findById(request.getId())
 				.orElseThrow(() -> new RuntimeException("Urun bulunamadi"));
@@ -95,4 +100,11 @@ public class ProductServiceImpl implements ProductService {
 		productRepository.deleteById(id);
 	}
 
+	// Aynı isimde ürün olup olmadigini kontrol et
+	private void productWithSameNameShouldNotExist(String productName) {
+		Optional<Product> productWithSameName = productRepository.findByName(productName);
+		if (productWithSameName.isPresent()) {
+			throw new RuntimeException(productName + " isimli bir ürün zaten var");
+		}
+	}
 }
