@@ -1,5 +1,6 @@
 package com.tobeto.java4apair4.controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -54,4 +55,53 @@ public class ProductController {
 	public void add(@RequestParam int id) {
 		productService.deleteById(id);
 	}
+	
+	@GetMapping("/getbyname")
+	public List<ListProductResponse> getByName(@RequestParam String name) {
+		List<ListProductResponse> products = productService.findByNameIgnoreCaseOrderByName(name);
+		return products;
+	}
+	
+	@GetMapping("/getbynamestartingwith")
+	public List<ListProductResponse> getByNameStartingWith(@RequestParam String prefix) {
+		List<ListProductResponse> products = productService.findByNameStartingWithIgnoreCaseOrderByName(prefix);
+		return products;
+	}
+	
+	@GetMapping("/getbynameendingwith")
+	public List<ListProductResponse> getByNameEndingWith(@RequestParam String suffix) {
+		List<ListProductResponse> products = productService.findByNameEndingWithIgnoreCaseOrderByName(suffix);
+		return products;
+	}
+	
+	@GetMapping("/getbynamecontaining")
+	public List<ListProductResponse> getByNameContaining(@RequestParam String infix) {
+		List<ListProductResponse> products = productService.findByNameContainingIgnoreCaseOrderByName(infix);
+		return products;
+	}
+	
+	@GetMapping("/getbynamelike")
+	public List<ListProductResponse> getByNameLike(@RequestParam String likePattern) {
+		List<ListProductResponse> products = productService.findByNameLikeOrderByName(likePattern);
+		return products;
+	}
+	
+	@GetMapping("/getbypricelessthan")
+	public List<ListProductResponse> getByPriceLessThan(@RequestParam Integer price) {
+		List<ListProductResponse> products = productService.findByPriceLessThan(price);
+		return products;
+	}
+	
+	@GetMapping("/getbycreatedatbefore")
+	public List<ListProductResponse> getByCreatedAtBefore(@RequestParam LocalDateTime createdDate) {
+		List<ListProductResponse> products = productService.findByCreatedAtBefore(createdDate);
+		return products;
+	}
+	
+	@GetMapping("/getbycategoryid")
+	public List<ListProductResponse> getByCreatedAtBefore(@RequestParam Integer categoryId) {
+		List<ListProductResponse> products = productService.findByCategoryId(categoryId);
+		return products;
+	}
+	
 }

@@ -53,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public AddProductResponse add(AddProductRequest request) {
 		productWithSameNameShouldNotExist(request.getName());
-		
+
 		// Request'ten Product'a map'le
 		Product product = new Product();
 		product.setName(request.getName());
@@ -77,7 +77,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public UpdateProductResponse update(UpdateProductRequest request) {
 		productWithSameNameShouldNotExist(request.getName());
-		
+
 		// Request'ten Product'a map'le
 		Product product = productRepository.findById(request.getId())
 				.orElseThrow(() -> new RuntimeException("Urun bulunamadi"));
@@ -98,6 +98,155 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void deleteById(int id) {
 		productRepository.deleteById(id);
+	}
+
+	@Override
+	public List<ListProductResponse> findByNameStartingWithIgnoreCaseOrderByName(String prefix) {
+		List<Product> products = productRepository.findByNameStartingWithIgnoreCaseOrderByName(prefix);
+		List<ListProductResponse> response = new ArrayList<ListProductResponse>();
+
+		// Product'i Response'a map'le
+		for (Product product : products) {
+			// Once Category'sini map'le
+			Category category = product.getCategory();
+			ListCategoryResponse listCategoryResponse = new ListCategoryResponse(category.getId(), category.getName(),
+					category.getCreatedAt(), category.getModifiedAt());
+			ListProductResponse listProductResponse = new ListProductResponse(product.getId(), product.getName(),
+					product.getPrice(), product.getCreatedAt(), product.getModifiedAt(), listCategoryResponse);
+			response.add(listProductResponse);
+		}
+		return response;
+	}
+
+	@Override
+	public List<ListProductResponse> findByNameIgnoreCaseOrderByName(String name) {
+		List<Product> products = productRepository.findByNameIgnoreCaseOrderByName(name);
+		List<ListProductResponse> response = new ArrayList<ListProductResponse>();
+
+		// Product'i Response'a map'le
+		for (Product product : products) {
+			// Once Category'sini map'le
+			Category category = product.getCategory();
+			ListCategoryResponse listCategoryResponse = new ListCategoryResponse(category.getId(), category.getName(),
+					category.getCreatedAt(), category.getModifiedAt());
+			ListProductResponse listProductResponse = new ListProductResponse(product.getId(), product.getName(),
+					product.getPrice(), product.getCreatedAt(), product.getModifiedAt(), listCategoryResponse);
+			response.add(listProductResponse);
+		}
+		return response;
+	}
+
+	@Override
+	public List<ListProductResponse> findByNameEndingWithIgnoreCaseOrderByName(String suffix) {
+		List<Product> products = productRepository.findByNameEndingWithIgnoreCaseOrderByName(suffix);
+		List<ListProductResponse> response = new ArrayList<ListProductResponse>();
+
+		// Product'i Response'a map'le
+		for (Product product : products) {
+			// Once Category'sini map'le
+			Category category = product.getCategory();
+			ListCategoryResponse listCategoryResponse = new ListCategoryResponse(category.getId(), category.getName(),
+					category.getCreatedAt(), category.getModifiedAt());
+			ListProductResponse listProductResponse = new ListProductResponse(product.getId(), product.getName(),
+					product.getPrice(), product.getCreatedAt(), product.getModifiedAt(), listCategoryResponse);
+			response.add(listProductResponse);
+		}
+		return response;
+	}
+
+	@Override
+	public List<ListProductResponse> findByNameContainingIgnoreCaseOrderByName(String infix) {
+		List<Product> products = productRepository.findByNameContainingIgnoreCaseOrderByName(infix);
+		List<ListProductResponse> response = new ArrayList<ListProductResponse>();
+
+		// Product'i Response'a map'le
+		for (Product product : products) {
+			// Once Category'sini map'le
+			Category category = product.getCategory();
+			ListCategoryResponse listCategoryResponse = new ListCategoryResponse(category.getId(), category.getName(),
+					category.getCreatedAt(), category.getModifiedAt());
+			ListProductResponse listProductResponse = new ListProductResponse(product.getId(), product.getName(),
+					product.getPrice(), product.getCreatedAt(), product.getModifiedAt(), listCategoryResponse);
+			response.add(listProductResponse);
+		}
+		return response;
+	}
+
+	@Override
+	public List<ListProductResponse> findByNameLikeOrderByName(String likePattern) {
+		List<Product> products = productRepository.findByNameLikeOrderByName(likePattern);
+		List<ListProductResponse> response = new ArrayList<ListProductResponse>();
+
+		// Product'i Response'a map'le
+		for (Product product : products) {
+			// Once Category'sini map'le
+			Category category = product.getCategory();
+			ListCategoryResponse listCategoryResponse = new ListCategoryResponse(category.getId(), category.getName(),
+					category.getCreatedAt(), category.getModifiedAt());
+			ListProductResponse listProductResponse = new ListProductResponse(product.getId(), product.getName(),
+					product.getPrice(), product.getCreatedAt(), product.getModifiedAt(), listCategoryResponse);
+			response.add(listProductResponse);
+		}
+		return response;
+	}
+
+	@Override
+	public List<ListProductResponse> findByPriceLessThan(Integer price) {
+		List<Product> products = productRepository.findByPriceLessThan(price);
+		List<ListProductResponse> response = new ArrayList<ListProductResponse>();
+
+		// Product'i Response'a map'le
+		for (Product product : products) {
+			// Once Category'sini map'le
+			Category category = product.getCategory();
+			ListCategoryResponse listCategoryResponse = new ListCategoryResponse(category.getId(), category.getName(),
+					category.getCreatedAt(), category.getModifiedAt());
+			ListProductResponse listProductResponse = new ListProductResponse(product.getId(), product.getName(),
+					product.getPrice(), product.getCreatedAt(), product.getModifiedAt(), listCategoryResponse);
+			response.add(listProductResponse);
+		}
+		return response;
+	}
+
+	@Override
+	public List<ListProductResponse> findByCreatedAtBefore(LocalDateTime createdDate) {
+		List<Product> products = productRepository.findByCreatedAtBefore(createdDate);
+		List<ListProductResponse> response = new ArrayList<ListProductResponse>();
+
+		// Product'i Response'a map'le
+		for (Product product : products) {
+			// Once Category'sini map'le
+			Category category = product.getCategory();
+			ListCategoryResponse listCategoryResponse = new ListCategoryResponse(category.getId(), category.getName(),
+					category.getCreatedAt(), category.getModifiedAt());
+			ListProductResponse listProductResponse = new ListProductResponse(product.getId(), product.getName(),
+					product.getPrice(), product.getCreatedAt(), product.getModifiedAt(), listCategoryResponse);
+			response.add(listProductResponse);
+		}
+		return response;
+	}
+
+	@Override
+	public List<ListProductResponse> findByCategoryId(Integer categoryId) {
+		List<ListProductResponse> response = new ArrayList<ListProductResponse>();
+//		Category nesnesi ile aranacaksa
+//		Optional<Category> c = categoryRepository.findById(categoryId);
+//		if (c.isEmpty())
+//			return response;
+//		List<Product> products = productRepository.findByCategory(c.orElseThrow());
+		
+		List<Product> products = productRepository.findByCategoryId(categoryId);
+		// Product'i Response'a map'le
+		for (Product product : products) {
+			// Once Category'sini map'le
+			Category category = product.getCategory();
+			ListCategoryResponse listCategoryResponse = new ListCategoryResponse(category.getId(), category.getName(),
+					category.getCreatedAt(), category.getModifiedAt());
+			ListProductResponse listProductResponse = new ListProductResponse(product.getId(), product.getName(),
+					product.getPrice(), product.getCreatedAt(), product.getModifiedAt(), listCategoryResponse);
+			response.add(listProductResponse);
+		}
+		return response;
 	}
 
 	// Aynı isimde ürün olup olmadigini kontrol et
