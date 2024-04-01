@@ -8,7 +8,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.tobeto.java4apair4.entities.Category;
-import com.tobeto.java4apair4.entities.Product;
 import com.tobeto.java4apair4.repositories.CategoryRepository;
 import com.tobeto.java4apair4.services.abstracts.CategoryService;
 import com.tobeto.java4apair4.services.dtos.requests.category.AddCategoryRequest;
