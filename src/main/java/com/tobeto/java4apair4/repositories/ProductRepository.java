@@ -13,6 +13,7 @@ import com.tobeto.java4apair4.entities.Product;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 	// Derived query methods
 	Optional<Product> findByName(String name);
+	Optional<Product> findByNameIgnoreCase(String name);
 
 	List<Product> findByNameIgnoreCaseOrderByName(String name);
 

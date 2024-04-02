@@ -3,10 +3,9 @@ package com.tobeto.java4apair4.services.concretes;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 
+import com.tobeto.java4apair4.core.utils.exceptions.types.BusinessException;
 import com.tobeto.java4apair4.entities.Category;
 import com.tobeto.java4apair4.entities.Product;
 import com.tobeto.java4apair4.repositories.CategoryRepository;
@@ -38,9 +37,8 @@ public class ProductServiceImpl implements ProductService {
 
 		// Product'lari map'le
 		for (Product product : products) {
-			// Önce Product'in Category'sini map'le
-			Category category = categoryRepository.findById(product.getCategory().getId())
-					.orElseThrow(() -> new RuntimeException("Kategori bulunamadı"));
+			// Kategori kontrolünü yap ve Request'in Category'sini map'le
+			Category category = categoryShouldExist(product.getCategory().getId());
 			ListCategoryResponse listCategoryResponse = new ListCategoryResponse(category.getId(), category.getName(),
 					category.getCreatedAt(), category.getModifiedAt());
 			ListProductResponse listProductResponse = new ListProductResponse(product.getId(), product.getName(),
@@ -58,9 +56,8 @@ public class ProductServiceImpl implements ProductService {
 		Product product = new Product();
 		product.setName(request.getName());
 		product.setPrice(request.getPrice());
-		// Request'in Category'sini map'le
-		Category category = categoryRepository.findById(request.getCategoryId())
-				.orElseThrow(() -> new RuntimeException("Kategori bulunamadi"));
+		// Kategori kontrolünü yap
+		Category category = categoryShouldExist(request.getCategoryId());
 		product.setCategory(category);
 		Product savedProduct = productRepository.save(product);
 
@@ -78,9 +75,8 @@ public class ProductServiceImpl implements ProductService {
 	public UpdateProductResponse update(UpdateProductRequest request) {
 		productWithSameNameShouldNotExist(request.getName());
 
-		// Request'ten Product'a map'le
-		Product product = productRepository.findById(request.getId())
-				.orElseThrow(() -> new RuntimeException("Urun bulunamadi"));
+		// Ürün kontrolünü yap ve Request'ten Product'a map'le
+		Product product = productShouldExist(request.getId());
 		product.setName(request.getName());
 		product.setPrice(request.getPrice());
 		product.setModifiedAt(LocalDateTime.now());// tarih guncelle
@@ -234,7 +230,7 @@ public class ProductServiceImpl implements ProductService {
 //		if (c.isEmpty())
 //			return response;
 //		List<Product> products = productRepository.findByCategory(c.orElseThrow());
-		
+
 		List<Product> products = productRepository.findByCategoryId(categoryId);
 		// Product'i Response'a map'le
 		for (Product product : products) {
@@ -251,9 +247,18 @@ public class ProductServiceImpl implements ProductService {
 
 	// Aynı isimde ürün olup olmadigini kontrol et
 	private void productWithSameNameShouldNotExist(String productName) {
-		Optional<Product> productWithSameName = productRepository.findByName(productName);
-		if (productWithSameName.isPresent()) {
-			throw new RuntimeException(productName + " isimli bir ürün zaten var");
-		}
+		productRepository.findByNameIgnoreCase(productName).ifPresent((Product productWithSameName) -> {
+			throw new BusinessException(productName + " isimli bir ürün zaten var");
+		});
+	}
+
+	// Belirlenen id'de kategori olup olmadigini kontrol et
+	private Category categoryShouldExist(int categoryId) {
+		return categoryRepository.findById(categoryId).orElseThrow(() -> new BusinessException("Kategori bulunamadı."));
+	}
+
+	// Belirlenen id'de ürün olup olmadigini kontrol et
+	private Product productShouldExist(int productId) {
+		return productRepository.findById(productId).orElseThrow(() -> new BusinessException("Ürün bulunamadı."));
 	}
 }
