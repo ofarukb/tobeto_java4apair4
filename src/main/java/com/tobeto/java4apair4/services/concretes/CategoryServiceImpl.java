@@ -3,10 +3,9 @@ package com.tobeto.java4apair4.services.concretes;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 
+import com.tobeto.java4apair4.core.utils.exceptions.types.BusinessException;
 import com.tobeto.java4apair4.entities.Category;
 import com.tobeto.java4apair4.repositories.CategoryRepository;
 import com.tobeto.java4apair4.services.abstracts.CategoryService;
@@ -15,27 +14,26 @@ import com.tobeto.java4apair4.services.dtos.requests.category.UpdateCategoryRequ
 import com.tobeto.java4apair4.services.dtos.responses.category.AddCategoryResponse;
 import com.tobeto.java4apair4.services.dtos.responses.category.ListCategoryResponse;
 import com.tobeto.java4apair4.services.dtos.responses.category.UpdateCategoryResponse;
+import com.tobeto.java4apair4.services.mappers.CategoryMapper;
+
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
 	private CategoryRepository categoryRepository;
 
-	public CategoryServiceImpl(CategoryRepository categoryRepository) {
-		super();
-		this.categoryRepository = categoryRepository;
-	}
-
 	@Override
 	public List<ListCategoryResponse> getAll() {
-		List<Category> categories = categoryRepository.findAll();
+		List<Category> categories = categoryRepository.findAllOrderByIdAsc();
 		List<ListCategoryResponse> response = new ArrayList<ListCategoryResponse>();
 
 		// Category'leri map'le
 		for (Category category : categories) {
-			ListCategoryResponse categoryResponse = new ListCategoryResponse(category.getId(), category.getName(),
-					category.getCreatedAt(), category.getModifiedAt());
-			response.add(categoryResponse);
+			ListCategoryResponse listCategoryResponse = CategoryMapper.INSTANCE
+					.listCategoryResponseFromCategory(category);
+			response.add(listCategoryResponse);
 		}
 		return response;
 	}
@@ -45,31 +43,28 @@ public class CategoryServiceImpl implements CategoryService {
 		categoryWithSameNameShouldNotExist(request.getName());
 
 		// Request'i Category'ye map'le
-		Category category = new Category();
-		category.setName(request.getName());
-		category.setCreatedAt(LocalDateTime.now());
+		Category category = CategoryMapper.INSTANCE.categoryFromAddRequest(request);
+
 		Category savedCategory = categoryRepository.save(category);
 
 		// Category'yi Response'a map'le
-		AddCategoryResponse response = new AddCategoryResponse(savedCategory.getId(), savedCategory.getName(),
-				savedCategory.getCreatedAt());
+		AddCategoryResponse response = CategoryMapper.INSTANCE.addCategoryResponseFromCategory(savedCategory);
+
 		return response;
 	}
 
 	@Override
 	public UpdateCategoryResponse update(UpdateCategoryRequest request) {
 		categoryWithSameNameShouldNotExist(request.getName());
+		categoryWithGivenIdShouldExist(request.getId());
 
 		// Request'i Category'ye map'le
-		Category category = categoryRepository.findById(request.getId())
-				.orElseThrow(() -> new RuntimeException("Kategori bulunamadı"));
-		category.setName(request.getName());
+		Category category = CategoryMapper.INSTANCE.categoryFromUpdateCategoryRequest(request);
 		category.setModifiedAt(LocalDateTime.now());
 		Category savedCategory = categoryRepository.save(category);
 
 		// Category'yi Response'a map'le
-		UpdateCategoryResponse response = new UpdateCategoryResponse(savedCategory.getId(), savedCategory.getName(),
-				savedCategory.getCreatedAt(), savedCategory.getModifiedAt());
+		UpdateCategoryResponse response = CategoryMapper.INSTANCE.updateCategoryResponseFromCategory(savedCategory);
 
 		return response;
 	}
@@ -79,12 +74,16 @@ public class CategoryServiceImpl implements CategoryService {
 		categoryRepository.deleteById(id);
 	}
 
-	// Aynı isimde kategori olup olmadigini kontrol et
+	// Aynı isimde bir kategori olmamali
 	private void categoryWithSameNameShouldNotExist(String categoryName) {
-		Optional<Category> categoryWithSameName = categoryRepository.findByName(categoryName);
-		if (categoryWithSameName.isPresent()) {
-			throw new RuntimeException(categoryName + " isimli bir kategori zaten var");
-		}
+		categoryRepository.findByName(categoryName).ifPresent((category) -> {
+			throw new BusinessException(categoryName + " isimli bir kategori zaten var");
+		});
+	}
+
+	// Verilen id'de bir kategori olmali
+	private void categoryWithGivenIdShouldExist(int id) {
+		categoryRepository.findById(id).orElseThrow(() -> new BusinessException("Kategori bulunamadı"));
 	}
 
 }
